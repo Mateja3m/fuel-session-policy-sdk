@@ -13,6 +13,8 @@ yarn-error.log*
 pnpm-debug.log*
 *.tmp
 *.swp
+*.tgz
+.npm-cache
 .idea
 .vscode/*
 !.vscode/extensions.json

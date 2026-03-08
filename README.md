@@ -1,49 +1,52 @@
 # Fuel Session Policy SDK
 
-TypeScript-first Fuel monorepo for lightweight session policies in dApps.
+TypeScript-first Fuel monorepo for building and demonstrating temporary session policies in Fuel dApps.
 
-## Project Summary
-This repository provides an MVP Session Policy SDK that lets a user approve one temporary policy and then execute multiple allowed actions under policy constraints.
+## Main Publishable Package
+- `@idoa/fuel-session-policy-sdk`
 
+This is the only package intended for npm publication.
+
+## Repository Structure
+- `packages/session-policy-sdk`: publishable TypeScript SDK
+- `apps/demo-web`: private React + MUI demo app
+- `packages/shared`: private internal workspace (optional helper types/constants)
+- `sway/session-policy-predicate`: minimal reference predicate
+- `docs`: architecture, policy model, and testing docs
+- `scripts`: setup and utility scripts
+
+## Current SDK Scope
 Implemented policy constraints:
 - `expiresAt`
 - `maxSpend`
 - `allowedContracts`
 
-Extension placeholders included:
+Placeholder extension points:
 - `allowedAssets`
 - `allowedActions`
-
-## Monorepo Structure
-- `apps/demo-web`: React + MUI demo app
-- `packages/session-policy-sdk`: reusable TypeScript SDK
-- `packages/shared`: shared TS constants/types
-- `sway/session-policy-predicate`: one minimal reference predicate
-- `scripts`: local setup scripts
-- `docs`: architecture/policy/testing documentation
 
 ## Requirements
 - Node.js 20+
 - npm 10+
-- Fuel toolchain (`forc`) for predicate build
+- `forc` installed for Sway predicate build only
 
-## Quick Commands
+## Local Development
 - Install dependencies: `npm install`
-- Prepare local demo env: `npm run setup:local`
+- Prepare local env files: `npm run setup:local`
 - Run demo app: `npm run dev`
 - Run tests: `npm test`
-- Build all TS packages/apps: `npm run build`
-- Build Sway predicate: `npm run fuel:build`
+- Build all workspaces: `npm run build`
+- Build predicate: `npm run fuel:build`
 
 ## How to Try This Quickly
 
 ### Local mode
-1. Start a local Fuel node in a separate terminal.
+1. Start a local Fuel node in another terminal.
 2. Run:
    - `npm install`
    - `npm run setup:local`
    - `npm run dev`
-3. Open the app and run this flow:
+3. In the demo app:
    - Connect wallet
    - Create example session policy
    - Approve session
@@ -54,33 +57,42 @@ Extension placeholders included:
 1. Update `apps/demo-web/.env.local`:
    - `VITE_FUEL_NETWORK=testnet`
    - `VITE_FUEL_NODE_URL=https://testnet.fuel.network/v1/graphql`
-2. Fund wallet from Fuel faucet.
-3. Start demo app with `npm run dev`.
+2. Fund your wallet from Fuel faucet.
+3. Run `npm run dev` and repeat the same flow.
 
-### Expected happy-path result
-- Valid action executes and logs a success entry with mock tx id.
-- Session spend counter increases.
+### Expected happy path
+- Valid action succeeds.
+- Spend tracker increments.
 
-### Expected failure-path result
-- Invalid action (blocked contract) is rejected by SDK policy checks.
-- Result logs show clear blocked-action error.
+### Expected failure path
+- Invalid action is blocked by policy checks.
+- Log panel shows the policy violation reason.
 
-## What Works Now
-- Session policy creation and validation in TypeScript
-- Predicate payload encoding helper
-- Session execution wrapper with policy checks
-- Demo app for approve/execute success+failure paths
-- Reference Sway predicate for expiry, contract allowlist, spend cap
+## npm Publishing Readiness
 
-## Intentionally MVP Scope
-- No wallet implementation
-- No multisig/paymaster/account abstraction framework
-- No backend relayer
-- No policy registry/revocation contract
-- No storage-based on-chain logic
+The publish target is:
+- `@idoa/fuel-session-policy-sdk`
 
-## Phase-2 Directions
-- Strong typed action-level constraints
-- Asset-level restriction enforcement
-- Optional ABI method filtering
-- Richer demo transaction integration with live contracts
+### Pre-publish checks
+- `npm run build`
+- `npm test`
+- `npm run pack:sdk`
+
+### Publish command
+- `npm run publish:sdk`
+
+### One-time npm prerequisites
+- Ensure `@idoa` npm scope exists and you have permission.
+- Run `npm login`.
+- Ensure package metadata URLs in `packages/session-policy-sdk/package.json` point to your final repository.
+
+## What Is Intentionally Out of Scope
+- Wallet implementation
+- Multisig/paymaster/account abstraction framework
+- Backend relayer
+- On-chain session registry/revocation contracts
+- Storage-based predicate state
+
+## Notes for Reviewers
+- Core product logic is in TypeScript SDK for fast iteration and low complexity.
+- Sway is intentionally limited to one small reference predicate for expiry, contract allowlist, and spend cap checks.
