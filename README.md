@@ -75,6 +75,3 @@ Placeholder extension points:
 - On-chain session registry/revocation contracts
 - Storage-based predicate state
 
-## Notes for Reviewers
-- Core product logic is in TypeScript SDK for fast iteration and low complexity.
-- Sway is intentionally limited to one small reference predicate for expiry, contract allowlist, and spend cap checks.
