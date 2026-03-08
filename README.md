@@ -68,24 +68,6 @@ Placeholder extension points:
 - Invalid action is blocked by policy checks.
 - Log panel shows the policy violation reason.
 
-## npm Publishing Readiness
-
-The publish target is:
-- `@idoa/fuel-session-policy-sdk`
-
-### Pre-publish checks
-- `npm run build`
-- `npm test`
-- `npm run pack:sdk`
-
-### Publish command
-- `npm run publish:sdk`
-
-### One-time npm prerequisites
-- Ensure `@idoa` npm scope exists and you have permission.
-- Run `npm login`.
-- Ensure package metadata URLs in `packages/session-policy-sdk/package.json` point to your final repository.
-
 ## What Is Intentionally Out of Scope
 - Wallet implementation
 - Multisig/paymaster/account abstraction framework
