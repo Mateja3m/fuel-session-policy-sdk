@@ -1,0 +1,20 @@
+{
+  "name": "fuel-session-policy-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TypeScript-first Fuel Session Policy SDK monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "setup:local": "node scripts/setup-local.mjs",
+    "dev": "npm run dev --workspace @fuel-session-policy/demo-web",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "fuel:build": "cd sway/session-policy-predicate && forc build"
+  }
+}
