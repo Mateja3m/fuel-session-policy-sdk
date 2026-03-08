@@ -53,7 +53,3 @@ console.log(result.nextSpent);
 - `encodePredicateData` is currently a simple JSON-to-hex payload helper for MVP demo workflows.
 - This package does not implement wallet logic or account abstraction.
 
-## Out of scope (MVP)
-- On-chain policy registry
-- Revocation contracts
-- Full account abstraction framework
