@@ -2,7 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@fuel-session-policy/sdk": ["../../packages/session-policy-sdk/src/index.ts"]
+    }
   },
   "include": ["src"]
 }

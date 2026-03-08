@@ -13,8 +13,8 @@
   "scripts": {
     "setup:local": "node scripts/setup-local.mjs",
     "dev": "npm run dev --workspace @fuel-session-policy/demo-web",
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspace @fuel-session-policy/shared && npm run build --workspace @fuel-session-policy/sdk && npm run build --workspace @fuel-session-policy/demo-web",
     "test": "npm run test --workspaces",
-    "fuel:build": "cd sway/session-policy-predicate && forc build"
+    "fuel:build": "node scripts/build-predicate.mjs"
   }
 }
