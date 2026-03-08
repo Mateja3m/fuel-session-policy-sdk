@@ -1,0 +1,7 @@
+[project]
+name = "session_policy_predicate"
+entry = "main.sw"
+license = "Apache-2.0"
+authors = ["fuel-session-policy-sdk"]
+
+[dependencies]
