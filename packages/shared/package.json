@@ -1,5 +1,5 @@
 {
-  "name": "@fuel-session-policy/shared",
+  "name": "@idoa/fuel-session-policy-shared",
   "version": "0.1.0",
   "private": true,
   "type": "module",

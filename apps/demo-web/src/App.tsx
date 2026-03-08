@@ -14,7 +14,7 @@ import {
   createSessionPolicy,
   executeWithSession,
   type SessionPolicy
-} from '@fuel-session-policy/sdk';
+} from '@idoa/fuel-session-policy-sdk';
 
 interface FuelWindow {
   fuel?: {

@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@fuel-session-policy/sdk': resolve(
+      '@idoa/fuel-session-policy-sdk': resolve(
         __dirname,
         '../../packages/session-policy-sdk/src/index.ts'
       )

@@ -12,9 +12,11 @@
   },
   "scripts": {
     "setup:local": "node scripts/setup-local.mjs",
-    "dev": "npm run dev --workspace @fuel-session-policy/demo-web",
-    "build": "npm run build --workspace @fuel-session-policy/shared && npm run build --workspace @fuel-session-policy/sdk && npm run build --workspace @fuel-session-policy/demo-web",
+    "dev": "npm run dev --workspace @idoa/fuel-session-policy-demo-web",
+    "build": "npm run build --workspace @idoa/fuel-session-policy-shared && npm run build --workspace @idoa/fuel-session-policy-sdk && npm run build --workspace @idoa/fuel-session-policy-demo-web",
     "test": "npm run test --workspaces",
-    "fuel:build": "node scripts/build-predicate.mjs"
+    "fuel:build": "node scripts/build-predicate.mjs",
+    "pack:sdk": "npm pack --workspace @idoa/fuel-session-policy-sdk",
+    "publish:sdk": "npm publish --workspace @idoa/fuel-session-policy-sdk --access public"
   }
 }

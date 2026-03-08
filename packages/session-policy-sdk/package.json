@@ -1,17 +1,43 @@
 {
-  "name": "@fuel-session-policy/sdk",
+  "name": "@idoa/fuel-session-policy-sdk",
   "version": "0.1.0",
-  "private": true,
+  "description": "Lightweight TypeScript SDK for Fuel session policy flows.",
+  "license": "Apache-2.0",
+  "author": "idoa",
+  "private": false,
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/idoa/fuel-session-policy-sdk.git",
+    "directory": "packages/session-policy-sdk"
+  },
+  "homepage": "https://github.com/idoa/fuel-session-policy-sdk/tree/main/packages/session-policy-sdk",
+  "bugs": {
+    "url": "https://github.com/idoa/fuel-session-policy-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm run test"
   },
-  "dependencies": {
-    "@fuel-session-policy/shared": "0.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "^5.8.2",
     "vitest": "^3.0.8"

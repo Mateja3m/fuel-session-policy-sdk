@@ -5,7 +5,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@fuel-session-policy/sdk": ["../../packages/session-policy-sdk/src/index.ts"]
+      "@idoa/fuel-session-policy-sdk": ["../../packages/session-policy-sdk/src/index.ts"]
     }
   },
   "include": ["src"]
