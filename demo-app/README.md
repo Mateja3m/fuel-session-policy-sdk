@@ -1,4 +1,4 @@
-# Demo Web App
+# Demo App
 
 Reviewer-focused React + MUI app for demonstrating session policy behavior.
 

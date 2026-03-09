@@ -4,7 +4,7 @@
   "private": true,
   "description": "TypeScript-first Fuel Session Policy SDK monorepo",
   "workspaces": [
-    "apps/*",
+    "demo-app",
     "packages/*"
   ],
   "engines": {
@@ -12,8 +12,8 @@
   },
   "scripts": {
     "setup:local": "node scripts/setup-local.mjs",
-    "dev": "npm run dev --workspace @idoa/fuel-session-policy-demo-web",
-    "build": "npm run build --workspace @idoa/fuel-session-policy-shared && npm run build --workspace @idoa/fuel-session-policy-sdk && npm run build --workspace @idoa/fuel-session-policy-demo-web",
+    "dev": "npm run dev --workspace @idoa/fuel-session-policy-demo-app",
+    "build": "npm run build --workspace @idoa/fuel-session-policy-shared && npm run build --workspace @idoa/fuel-session-policy-sdk && npm run build --workspace @idoa/fuel-session-policy-demo-app",
     "typecheck": "npm run typecheck --workspaces",
     "lint": "npm run lint --workspaces",
     "test": "npm run test --workspaces",

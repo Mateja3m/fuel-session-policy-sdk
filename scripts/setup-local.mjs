@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 const files = [
   ['.env.example', '.env'],
-  ['apps/demo-web/.env.example', 'apps/demo-web/.env.local']
+  ['demo-app/.env.example', 'demo-app/.env.local']
 ];
 
 for (const [source, target] of files) {

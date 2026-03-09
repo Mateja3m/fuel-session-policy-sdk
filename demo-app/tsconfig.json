@@ -1,11 +1,11 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@idoa/fuel-session-policy-sdk": ["../../packages/session-policy-sdk/src/index.ts"]
+      "@idoa/fuel-session-policy-sdk": ["../packages/session-policy-sdk/src/index.ts"]
     }
   },
   "include": ["src"],

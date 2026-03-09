@@ -8,7 +8,7 @@ export default defineConfig({
     alias: {
       '@idoa/fuel-session-policy-sdk': resolve(
         __dirname,
-        '../../packages/session-policy-sdk/src/index.ts'
+        '../packages/session-policy-sdk/src/index.ts'
       )
     }
   }

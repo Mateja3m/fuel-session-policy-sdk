@@ -21,7 +21,7 @@ Warning: v1 is not intended for high-value production custody.
 
 ## Monorepo Structure
 - `packages/session-policy-sdk`: main publishable SDK (`@idoa/fuel-session-policy-sdk`)
-- `apps/demo-web`: reviewer-friendly React demo app
+- `demo-app`: reviewer-friendly React demo app
 - `packages/shared`: private workspace helpers
 - `sway/session-policy-predicate`: one minimal reference predicate
 - `docs`: architecture, policy model, testing, compatibility, maintenance
@@ -61,7 +61,7 @@ See `docs/compatibility.md` for details.
    - Execute invalid action (should be blocked)
 
 ### Testnet mode
-1. Update `apps/demo-web/.env.local`:
+1. Update `demo-app/.env.local`:
    - `VITE_FUEL_NETWORK=testnet`
    - `VITE_FUEL_NODE_URL=https://testnet.fuel.network/v1/graphql`
 2. Fund wallet from Fuel faucet.
