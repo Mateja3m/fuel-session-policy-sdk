@@ -1,16 +1,27 @@
 # Demo Web App
 
-Simple React + MUI demo for session policy flow.
+Reviewer-focused React + MUI app for demonstrating session policy behavior.
 
-## Demo flow
-1. Connect wallet
-2. Create session policy
-3. Approve session
-4. Execute valid action (success)
-5. Execute invalid action (blocked)
+## Purpose
+- Show wallet connection status
+- Show short-lived policy preview
+- Demonstrate one valid action
+- Demonstrate one blocked invalid action
+- Surface clear human-readable status and logs
 
 ## Run
-From repo root:
+From repository root:
 - `npm install`
 - `npm run setup:local`
 - `npm run dev`
+
+## Local mode
+Use default `.env.local` values and local Fuel node.
+
+## Testnet mode
+Set:
+- `VITE_FUEL_NETWORK=testnet`
+- `VITE_FUEL_NODE_URL=https://testnet.fuel.network/v1/graphql`
+
+## Scope note
+This app is a demo harness, not production wallet/account infrastructure.

@@ -6,22 +6,25 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "test": "echo 'No tests in demo-web yet'",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck",
+    "test": "vitest run",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
     "@idoa/fuel-session-policy-sdk": "0.1.0",
-    "@mui/material": "^6.4.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@mui/material": "6.4.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.20",
-    "@types/react-dom": "^18.3.6",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.0"
+    "@types/react": "18.3.20",
+    "@types/react-dom": "18.3.6",
+    "@vitejs/plugin-react": "4.3.4",
+    "typescript": "5.8.2",
+    "vite": "6.4.1",
+    "vitest": "3.2.4"
   }
 }
