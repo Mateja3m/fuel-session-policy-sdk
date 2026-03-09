@@ -1,21 +1,31 @@
 # Architecture
 
+## Overview
+The repository is designed as a TypeScript-first middleware SDK with one minimal Sway reference predicate.
+
 ## Why TypeScript-first
-This project keeps almost all product logic in TypeScript so the core policy model is easy to iterate, test, and integrate into frontend dApps.
+- Most policy logic lives in TypeScript for fast iteration and easier solo maintenance.
+- Validation and session execution checks can be tested deterministically with Vitest.
+- dApp developers can integrate without deep Sway contract complexity.
 
 ## Why Sway is intentionally minimal
-A single reference predicate is included only to show how policy checks map to on-chain validation. This avoids overbuilding while giving reviewers a concrete Fuel-native component.
+- One small predicate demonstrates Fuel-native validation mapping.
+- It checks expiry, allowed contract target, and max spend only.
+- No storage-based state, registry, or revocation logic is included.
 
-## Predicate in flow
-1. dApp builds policy in TS SDK.
-2. SDK validates and encodes predicate data.
-3. Demo executes against allowed or blocked action paths.
-4. Predicate acts as reference for expiry, contract target, and spend checks.
+## Runtime flow
+1. dApp creates a session policy via SDK.
+2. SDK validates, normalizes, and optionally encodes payload for predicate usage.
+3. dApp executes actions through SDK guardrails.
+4. Demo shows one allowed action and one blocked action path.
+
+## Solo-maintainability choices
+- Small focused modules (`policy`, `execution`, `encoding`, `guards`).
+- Deterministic tests with fixed timestamps.
+- CI runs typecheck, tests, and build on every push/PR.
 
 ## Intentionally not included
-- Wallet implementation
-- Multisig
-- Paymaster
-- Full account abstraction framework
-- Revocation/registry/storage contracts
+- Wallet, multisig, paymaster, or full account abstraction framework
 - Backend relayer services
+- On-chain revocation/registry systems
+- High-value custody guarantees for v1

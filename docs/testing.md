@@ -1,19 +1,34 @@
 # Testing
 
 ## Local setup
-1. Install dependencies: `npm install`
-2. Prepare env files: `npm run setup:local`
-3. Start local Fuel node (separate terminal, per Fuel docs).
-4. Run tests: `npm test`
-5. Run demo: `npm run dev`
+1. `npm install`
+2. `npm run setup:local`
+3. Start local Fuel node separately
+4. `npm run typecheck`
+5. `npm test`
+6. `npm run dev`
 
-## Simulate demo flow
-1. Connect a compatible wallet in the demo app.
-2. Generate default session policy.
-3. Click approve session.
-4. Execute valid action and verify success log.
+## SDK tests (Vitest)
+Current coverage includes:
+- expired session policy
+- invalid `maxSpend`
+- empty `allowedContracts`
+- wrong contract target
+- malformed policy payload
+- valid happy-path flow
+- blocked invalid action
 
-## Verify blocked invalid action
-1. Keep the same approved session.
-2. Execute invalid action button.
-3. Confirm app logs policy validation failure for disallowed contract.
+## Demo flow verification
+1. Connect Fuel wallet in demo app.
+2. Generate short-lived policy.
+3. Approve session.
+4. Run valid action and confirm success status.
+5. Run invalid action and confirm blocked status/reason.
+
+## Testnet mode
+1. Set `VITE_FUEL_NETWORK=testnet` and testnet node URL in `.env.local`.
+2. Fund wallet with faucet.
+3. Repeat same flow and confirm behavior parity with local mode.
+
+## Reviewer note
+The demo deliberately uses readable status and logs to make happy-path and failure-path outcomes obvious in screenshots/videos.

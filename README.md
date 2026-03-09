@@ -1,42 +1,49 @@
 # Fuel Session Policy SDK
 
-TypeScript-first Fuel monorepo for building and demonstrating temporary session policies in Fuel dApps.
+TypeScript-first reference middleware SDK for Fuel dApps.
 
-## Main Publishable Package
-- `@idoa/fuel-session-policy-sdk`
+This project helps dApps define temporary session policies so users can approve once and execute multiple constrained actions. It is complementary to wallets, not a wallet replacement.
 
-This is the only package intended for npm publication.
+## Positioning
+- Reference middleware SDK for dApp session policies
+- Complementary to wallet UX and signature flows
+- Intentionally minimal MVP for reviewer clarity
+- Future extensions are possible, but out of current scope
 
-## Repository Structure
-- `packages/session-policy-sdk`: publishable TypeScript SDK
-- `apps/demo-web`: private React + MUI demo app
-- `packages/shared`: private internal workspace (optional helper types/constants)
-- `sway/session-policy-predicate`: minimal reference predicate
-- `docs`: architecture, policy model, and testing docs
-- `scripts`: setup and utility scripts
+## Security Posture (v1)
+- Short-lived session examples (5 minutes) in demo and tests
+- Strict input validation across all public SDK functions
+- Policy checks for `expiresAt`, `maxSpend`, and `allowedContracts`
+- Domain-separated policy payload structure for encoding/decoding
+- Explicit blocked-path handling and messaging in demo
 
-## Current SDK Scope
-Implemented policy constraints:
-- `expiresAt`
-- `maxSpend`
-- `allowedContracts`
+Warning: v1 is not intended for high-value production custody.
 
-Placeholder extension points:
-- `allowedAssets`
-- `allowedActions`
+## Monorepo Structure
+- `packages/session-policy-sdk`: main publishable SDK (`@idoa/fuel-session-policy-sdk`)
+- `apps/demo-web`: reviewer-friendly React demo app
+- `packages/shared`: private workspace helpers
+- `sway/session-policy-predicate`: one minimal reference predicate
+- `docs`: architecture, policy model, testing, compatibility, maintenance
 
-## Requirements
-- Node.js 20+
-- npm 10+
-- `forc` installed for Sway predicate build only
+## Compatibility
+- Node.js: 20.x
+- npm: 10.x
+- TypeScript: 5.8.x
+- Vitest: 3.2.x
+- Vite: 6.x
 
-## Local Development
+See `docs/compatibility.md` for details.
+
+## Quick Commands
 - Install dependencies: `npm install`
 - Prepare local env files: `npm run setup:local`
 - Run demo app: `npm run dev`
+- Typecheck all workspaces: `npm run typecheck`
+- Lint (typecheck-backed): `npm run lint`
 - Run tests: `npm test`
 - Build all workspaces: `npm run build`
-- Build predicate: `npm run fuel:build`
+- Build Sway predicate: `npm run fuel:build`
 
 ## How to Try This Quickly
 
@@ -48,30 +55,26 @@ Placeholder extension points:
    - `npm run dev`
 3. In the demo app:
    - Connect wallet
-   - Create example session policy
+   - Create short-lived session policy
    - Approve session
-   - Execute valid action
-   - Execute invalid action
+   - Execute valid action (should pass)
+   - Execute invalid action (should be blocked)
 
 ### Testnet mode
 1. Update `apps/demo-web/.env.local`:
    - `VITE_FUEL_NETWORK=testnet`
    - `VITE_FUEL_NODE_URL=https://testnet.fuel.network/v1/graphql`
-2. Fund your wallet from Fuel faucet.
-3. Run `npm run dev` and repeat the same flow.
+2. Fund wallet from Fuel faucet.
+3. Run `npm run dev` and repeat demo flow.
 
-### Expected happy path
-- Valid action succeeds.
-- Spend tracker increments.
+### Expected outcomes
+- Happy path: valid action succeeds and spend counter increments.
+- Failure path: invalid target contract is blocked with readable reason.
 
-### Expected failure path
-- Invalid action is blocked by policy checks.
-- Log panel shows the policy violation reason.
-
-## What Is Intentionally Out of Scope
+## Intentionally Out of Scope
 - Wallet implementation
-- Multisig/paymaster/account abstraction framework
-- Backend relayer
-- On-chain session registry/revocation contracts
-- Storage-based predicate state
-
+- Multisig
+- Paymaster
+- Full account abstraction framework
+- Revocation/storage-heavy contract systems
+- Backend relayer services

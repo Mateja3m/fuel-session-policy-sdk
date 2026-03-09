@@ -1,25 +1,38 @@
 # Policy Model
 
 ## Session lifecycle
-1. User approves one session policy.
-2. dApp reuses that policy for multiple actions.
-3. Each action is validated against policy constraints.
-4. Session ends when expired, exceeded spend limit, or manually discarded.
+1. User approves one temporary policy.
+2. dApp can execute repeated actions if policy checks pass.
+3. Session is blocked when any constraint is violated.
+4. Session naturally expires at `expiresAt`.
 
-## Policy fields
-- `expiresAt`: UNIX timestamp in milliseconds when session becomes invalid.
-- `maxSpend`: max total spend amount as decimal string.
-- `allowedContracts`: list of contract IDs allowed during the session.
-- `allowedAssets` (extension point): optional future asset restriction list.
-- `allowedActions` (extension point): optional future action-level rules.
+## Core fields
+- `expiresAt`: UNIX timestamp in milliseconds.
+- `maxSpend`: positive integer string representing total allowed spend.
+- `allowedContracts`: strict allowlist of Fuel contract IDs (`0x` + 64 hex).
+
+## Extension placeholders
+- `allowedAssets`
+- `allowedActions`
+
+These are placeholders only in MVP and do not provide full enforcement semantics yet.
 
 ## Validation rules
-- `expiresAt` must be in the future.
-- `maxSpend` must be a positive numeric string.
-- `allowedContracts` must contain at least one valid contract ID string.
+- Policy object must be structurally valid.
+- `expiresAt` must be finite and in the future.
+- `maxSpend` must be positive integer string.
+- `allowedContracts` must be non-empty and format-valid.
 
-## Current limitations
-- No persistent on-chain storage for policy state.
-- No signature aggregation.
-- No revocation contract.
-- No per-method ABI validation yet.
+## Payload model
+Encoded predicate payload is domain-separated:
+- `domain: fuel-session-policy-sdk`
+- `version: 1`
+- `kind: predicate-policy`
+
+This reduces accidental cross-format parsing and version ambiguity.
+
+## Limitations
+- No persistent on-chain session state
+- No on-chain revocation primitive
+- No full ABI/action-level enforcement
+- Not intended for high-value production custody in v1

@@ -1,6 +1,8 @@
 # @idoa/fuel-session-policy-sdk
 
-Lightweight TypeScript SDK for session-based policy checks in Fuel dApps.
+Lightweight TypeScript SDK for session policy guardrails in Fuel dApps.
+
+This package is middleware and is complementary to wallet flows. It is not a wallet implementation.
 
 ## Install
 
@@ -8,10 +10,19 @@ Lightweight TypeScript SDK for session-based policy checks in Fuel dApps.
 npm install @idoa/fuel-session-policy-sdk
 ```
 
+## Security posture (v1)
+- Strict runtime input validation in all public functions
+- Guardrails for expiry, max spend, and contract allowlist
+- Domain-separated payload structure for predicate data
+
+Warning: v1 is not intended for high-value production custody.
+
 ## API
 - `createSessionPolicy(input)`
 - `validateSessionPolicy(policy)`
+- `createPredicatePayload(policy)`
 - `encodePredicateData(policy)`
+- `decodePredicateData(encoded)`
 - `buildSessionTransaction(params)`
 - `executeWithSession(params)`
 
@@ -20,36 +31,11 @@ npm install @idoa/fuel-session-policy-sdk
 - `maxSpend`
 - `allowedContracts`
 
-## Extension points (MVP placeholders)
+## Extension placeholders
 - `allowedAssets`
 - `allowedActions`
 
-## Example
-
-```ts
-import {
-  createSessionPolicy,
-  executeWithSession
-} from '@idoa/fuel-session-policy-sdk';
-
-const policy = createSessionPolicy({
-  expiresAt: Date.now() + 15 * 60 * 1000,
-  maxSpend: '10',
-  allowedContracts: ['0x1111111111111111111111111111111111111111111111111111111111111111']
-});
-
-const result = await executeWithSession({
-  policy,
-  targetContract: '0x1111111111111111111111111111111111111111111111111111111111111111',
-  amount: '2',
-  currentSpent: '0',
-  executor: async () => ({ txId: 'mock-id' })
-});
-
-console.log(result.nextSpent);
-```
-
-## Notes
-- `encodePredicateData` is currently a simple JSON-to-hex payload helper for MVP demo workflows.
-- This package does not implement wallet logic or account abstraction.
-
+## Out of scope (MVP)
+- Wallet/multisig/paymaster/account abstraction features
+- On-chain revocation/registry contracts
+- Backend relay infrastructure
