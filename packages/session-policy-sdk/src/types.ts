@@ -20,6 +20,15 @@ export interface SessionValidationResult {
   warnings: string[];
 }
 
+export interface PredicatePolicyPayload {
+  domain: 'fuel-session-policy-sdk';
+  version: '1';
+  kind: 'predicate-policy';
+  expiresAt: number;
+  maxSpend: string;
+  allowedContracts: string[];
+}
+
 export interface SessionTransaction {
   targetContract: string;
   amount: string;
