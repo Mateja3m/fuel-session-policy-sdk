@@ -2,7 +2,7 @@
   "name": "@idoa/fuel-session-policy-sdk",
   "version": "0.1.0",
   "description": "Lightweight TypeScript SDK for Fuel session policy flows.",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "author": "idoa",
   "private": false,
   "type": "module",
