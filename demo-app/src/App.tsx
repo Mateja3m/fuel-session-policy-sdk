@@ -15,12 +15,30 @@ import {
   executeWithSession,
   type SessionPolicy
 } from '@idoa/fuel-session-policy-sdk';
+import {
+  FuelWalletConnector,
+  FueletWalletConnector
+} from '@fuels/connectors';
 import { evaluateDemoAction } from './demo-policy-helpers.js';
 
 interface FuelWindow {
-  fuel?: {
-    getWallets?: () => Promise<Array<{ address: string | { toString: () => string } }>>;
-  };
+  fuel?: FuelProvider;
+  fuelet?: FuelProvider;
+}
+
+interface FuelProvider {
+  connect?: () => Promise<boolean>;
+  isConnected?: () => Promise<boolean>;
+  currentAccount?: () => Promise<string | null>;
+  accounts?: () => Promise<string[]>;
+  getWallets?: () => Promise<Array<{ address: string | { toString: () => string } }>>;
+}
+
+interface ConnectorLike {
+  connect: () => Promise<boolean>;
+  ping: () => Promise<boolean>;
+  currentAccount: () => Promise<string | null>;
+  accounts: () => Promise<string[]>;
 }
 
 type StatusTone = 'info' | 'success' | 'warning' | 'error';
@@ -66,6 +84,23 @@ function explainBlockedAction(policy: SessionPolicy | null): string[] {
   ];
 }
 
+async function resolveInjectedProvider(timeoutMs = 2500): Promise<FuelProvider | null> {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (fuelWindow.fuel) {
+      return fuelWindow.fuel;
+    }
+
+    if (fuelWindow.fuelet) {
+      return fuelWindow.fuelet;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 120));
+  }
+
+  return null;
+}
+
 export function App() {
   const [walletStatus, setWalletStatus] = useState('Disconnected');
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -104,23 +139,97 @@ export function App() {
 
   async function connectWallet(): Promise<void> {
     try {
-      if (!fuelWindow.fuel?.getWallets) {
+      const fuel = await resolveInjectedProvider();
+      if (!fuel) {
+        const connectors: Array<{ connector: ConnectorLike; label: string }> = [
+          { connector: new FuelWalletConnector(), label: 'FuelWalletConnector' },
+          { connector: new FueletWalletConnector(), label: 'FueletWalletConnector' }
+        ];
+        const connectorErrors: string[] = [];
+
+        for (const item of connectors) {
+          try {
+            const pingValue = await item.connector.ping();
+            appendLog(`${item.label} ping=${String(pingValue)}.`);
+
+            const connected = await item.connector.connect();
+            if (!connected) {
+              connectorErrors.push(`${item.label}: connection request rejected.`);
+              continue;
+            }
+
+            let connectorAddress = await item.connector.currentAccount();
+            if (!connectorAddress) {
+              const accounts = await item.connector.accounts();
+              connectorAddress = accounts[0] ?? null;
+            }
+
+            if (!connectorAddress) {
+              connectorErrors.push(`${item.label}: connected but no account returned.`);
+              continue;
+            }
+
+            setWalletAddress(connectorAddress);
+            setWalletStatus('Connected');
+            appendLog(`Wallet connected via ${item.label}: ${connectorAddress}`);
+            pushStatus('success', `Wallet connected via ${item.label}.`);
+            return;
+          } catch (error) {
+            connectorErrors.push(`${item.label}: ${String(error)}`);
+            continue;
+          }
+        }
+
+        if (connectorErrors.length > 0) {
+          appendLog(`Connector fallback failed: ${connectorErrors.join(' | ')}`);
+        }
+
+        const hasFuel = typeof fuelWindow.fuel !== 'undefined';
+        const hasFuelet = typeof fuelWindow.fuelet !== 'undefined';
         setWalletStatus('Fuel wallet provider not detected');
-        appendLog('Wallet connection failed: Fuel provider not available.');
-        pushStatus('warning', 'Fuel provider not found in window.fuel. Install a Fuel wallet extension.');
+        appendLog(`Wallet connection failed: provider not available. window.fuel=${String(hasFuel)} window.fuelet=${String(hasFuelet)}`);
+        pushStatus(
+          'warning',
+          'Wallet provider not injected. Check extension site access for localhost and disable strict browser shields.'
+        );
         return;
       }
 
-      const wallets = await fuelWindow.fuel.getWallets();
-      const first = wallets[0];
-      const address = typeof first?.address === 'string'
-        ? first.address
-        : first?.address?.toString();
+      const availableMethods = Object.keys(fuel).sort().join(', ');
+      appendLog(`Fuel provider detected with methods: ${availableMethods || 'none'}`);
+
+      if (fuel.connect) {
+        const connected = await fuel.connect();
+        if (!connected) {
+          setWalletStatus('Connection rejected');
+          pushStatus('warning', 'Wallet connection request was rejected.');
+          return;
+        }
+      }
+
+      let address: string | null = null;
+
+      if (fuel.currentAccount) {
+        address = await fuel.currentAccount();
+      }
+
+      if (!address && fuel.accounts) {
+        const accounts = await fuel.accounts();
+        address = accounts[0] ?? null;
+      }
+
+      if (!address && fuel.getWallets) {
+        const wallets = await fuel.getWallets();
+        const first = wallets[0];
+        address = typeof first?.address === 'string'
+          ? first.address
+          : first?.address?.toString() ?? null;
+      }
 
       if (!address) {
         setWalletStatus('No wallet available');
-        appendLog('No wallet returned by provider.');
-        pushStatus('warning', 'Wallet provider responded but no account was returned.');
+        appendLog('No account returned by provider after connect/currentAccount/accounts checks.');
+        pushStatus('warning', 'Wallet detected, but no authorized account is available for this dApp.');
         return;
       }
 
@@ -203,10 +312,6 @@ export function App() {
           <Typography variant="h4" fontWeight={700}>
             Fuel Session Policy SDK Demo
           </Typography>
-
-          <Alert severity="warning">
-            v1 reference demo only. Not intended for high-value production custody.
-          </Alert>
 
           <Stack direction="row" spacing={1}>
             <Chip label={`Network: ${network}`} color="primary" />

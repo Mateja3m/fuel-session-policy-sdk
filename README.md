@@ -10,6 +10,10 @@ This project helps dApps define temporary session policies so users can approve 
 - Intentionally minimal MVP for reviewer clarity
 - Future extensions are possible, but out of current scope
 
+## Wallet Connection In Demo
+- Demo wallet connection prefers injected providers (`window.fuel` / `window.fuelet`) and falls back to Fuel connector SDK adapters.
+- This improves reliability across extension runtime differences on local and testnet demos.
+
 ## Security Posture (v1)
 - Short-lived session examples (5 minutes) in demo and tests
 - Strict input validation across all public SDK functions
@@ -59,6 +63,10 @@ See `docs/compatibility.md` for details.
    - Approve session
    - Execute valid action (should pass)
    - Execute invalid action (should be blocked)
+4. If wallet connection fails:
+   - confirm extension site access for `localhost`
+   - restart `npm run dev` and hard refresh browser tab
+   - read `Result Logs` in the app for connector-specific error details
 
 ### Testnet mode
 1. Update `demo-app/.env.local`:
