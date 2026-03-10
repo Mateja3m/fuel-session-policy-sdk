@@ -25,7 +25,6 @@
     "url": "https://github.com/Mateja3m/fuel-session-policy-sdk.git",
     "directory": "packages/session-policy-sdk"
   },
-  "homepage": "https://github.com/Mateja3m/fuel-session-policy-sdk/tree/main/packages/session-policy-sdk",
   "bugs": {
     "url": "https://github.com/Mateja3m/fuel-session-policy-sdk/issues"
   },

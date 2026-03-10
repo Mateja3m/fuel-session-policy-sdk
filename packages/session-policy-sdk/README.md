@@ -34,8 +34,3 @@ Warning: v1 is not intended for high-value production custody.
 ## Extension placeholders
 - `allowedAssets`
 - `allowedActions`
-
-## Out of scope (MVP)
-- Wallet/multisig/paymaster/account abstraction features
-- On-chain revocation/registry contracts
-- Backend relay infrastructure

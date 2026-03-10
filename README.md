@@ -14,6 +14,13 @@ This project helps dApps define temporary session policies so users can approve 
 - Demo wallet connection prefers injected providers (`window.fuel` / `window.fuelet`) and falls back to Fuel connector SDK adapters.
 - This improves reliability across extension runtime differences on local and testnet demos.
 
+## Demo Screenshots
+![Wallet connected and policy generated](docs/images/demo-connected-policy.png)
+*Wallet connected on Fuel testnet and session policy generated.*
+
+![Valid and blocked actions](docs/images/demo-valid-and-blocked-action.png)
+*Valid action succeeds and invalid action is blocked with a readable reason.*
+
 ## Security Posture (v1)
 - Short-lived session examples (5 minutes) in demo and tests
 - Strict input validation across all public SDK functions

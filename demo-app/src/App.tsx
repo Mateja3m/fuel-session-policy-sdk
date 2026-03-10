@@ -55,6 +55,14 @@ const allowedContract = import.meta.env.VITE_ALLOWED_CONTRACT ??
 const blockedContract = import.meta.env.VITE_BLOCKED_CONTRACT ??
   `0x${'2'.repeat(64)}`;
 
+function formatAddress(address: string): string {
+  if (address.length <= 14) {
+    return address;
+  }
+
+  return `${address.slice(0, 8)}...${address.slice(-6)}`;
+}
+
 function explainAllowedAction(policy: SessionPolicy | null): string[] {
   if (!policy) {
     return ['No policy loaded yet.'];
@@ -169,11 +177,11 @@ export function App() {
               continue;
             }
 
-            setWalletAddress(connectorAddress);
-            setWalletStatus('Connected');
-            appendLog(`Wallet connected via ${item.label}: ${connectorAddress}`);
-            pushStatus('success', `Wallet connected via ${item.label}.`);
-            return;
+      setWalletAddress(connectorAddress);
+      setWalletStatus('Connected');
+      appendLog(`Wallet connected via ${item.label}: ${formatAddress(connectorAddress)}`);
+      pushStatus('success', `Wallet connected via ${item.label}.`);
+      return;
           } catch (error) {
             connectorErrors.push(`${item.label}: ${String(error)}`);
             continue;
@@ -235,7 +243,7 @@ export function App() {
 
       setWalletAddress(address);
       setWalletStatus('Connected');
-      appendLog(`Wallet connected: ${address}`);
+      appendLog(`Wallet connected: ${formatAddress(address)}`);
       pushStatus('success', 'Wallet connected. You can now generate and approve a session policy.');
     } catch (error) {
       setWalletStatus('Connection error');
@@ -318,7 +326,7 @@ export function App() {
             <Chip label={`Wallet: ${walletStatus}`} color={walletStatus === 'Connected' ? 'success' : 'default'} />
           </Stack>
 
-          {walletAddress ? <Alert severity="info">Connected address: {walletAddress}</Alert> : null}
+          {walletAddress ? <Alert severity="info">Connected address: {formatAddress(walletAddress)}</Alert> : null}
 
           <Stack direction="row" spacing={1} flexWrap="wrap">
             <Button variant="outlined" onClick={connectWallet}>Connect Wallet</Button>
